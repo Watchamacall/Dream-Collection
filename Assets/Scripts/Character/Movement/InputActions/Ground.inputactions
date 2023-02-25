@@ -1,0 +1,208 @@
+{
+    "name": "Ground",
+    "maps": [
+        {
+            "name": "Move",
+            "id": "b7133c61-7d66-4a75-af20-1d64d1b9aa18",
+            "actions": [
+                {
+                    "name": "Move",
+                    "type": "Button",
+                    "id": "3763c41c-ef28-40fa-8889-6a4b5450c09d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Flight",
+                    "type": "Button",
+                    "id": "83114b4e-ba0b-429d-b188-87f3889a2b5a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Altitude",
+                    "type": "Button",
+                    "id": "ae41dd27-ee0e-489f-af62-caf6d534e796",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "WASD",
+                    "id": "0ac74c2f-1834-447f-bcb7-851725755b28",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "d24afc44-d706-437b-9cc4-69ea6f396774",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "7d03ca6c-b502-4e85-a7af-18d7b0181fe6",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "a0169db1-4c51-43df-8393-3d9923f5c409",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "c1bf9585-bd42-474c-b243-38ccf9e98cbc",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "bba43ed2-c445-4fe0-955d-af2da4f97b92",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Flight",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "UpDown",
+                    "id": "c55b96ec-ab69-4feb-9776-0a3f4d29e2c3",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Altitude",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "12309f69-fb7f-454c-a239-3c85f2a6b492",
+                    "path": "<Keyboard>/leftShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Altitude",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "0057c450-966f-4679-942e-4aa15f1ca600",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Altitude",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                }
+            ]
+        },
+        {
+            "name": "Altitiude",
+            "id": "37bfba7e-96a8-4c0e-84ac-274cb928af08",
+            "actions": [],
+            "bindings": []
+        },
+        {
+            "name": "Look",
+            "id": "ca10177b-430a-461e-b3ad-cf84786f04c3",
+            "actions": [
+                {
+                    "name": "Look",
+                    "type": "Value",
+                    "id": "75cef788-7256-44ac-a01e-a7d642c8e13f",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "2faf9fec-4506-4977-847a-b22a64d7d5a0",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Look",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "ConstantControls",
+            "id": "b42b4ab7-341d-4cbe-b7a3-c944906669bf",
+            "actions": [
+                {
+                    "name": "Pause",
+                    "type": "Button",
+                    "id": "8bff09b4-eda2-4ebf-9848-8ab60a9d5a67",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "d639b21e-ed3d-402f-8b0f-b04cbf2584fe",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2116d2ec-bf35-4ba5-b94b-856ab08f07f4",
+                    "path": "<Keyboard>/p",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
