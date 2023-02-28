@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UIManager : MonoBehaviour
+public class UIManagerOld : MonoBehaviour
 {
     public GameObject playCanvas;
     public GameObject pauseCanvas;

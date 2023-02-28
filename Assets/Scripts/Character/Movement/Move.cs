@@ -5,6 +5,7 @@ using static UnityEngine.InputSystem.InputAction;
 using UnityEngine.UI;
 using TMPro;
 using BeardedManStudios.Forge.Networking.Generated;
+
 public enum MovementState
 {
     Ground,
@@ -161,6 +162,7 @@ public class Move : PlayerBehavior
         }
     }
     #endregion
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Ground"))

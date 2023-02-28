@@ -9,6 +9,4 @@ public class GameLogic : MonoBehaviour
     {
         NetworkManager.Instance.InstantiatePlayer();
     }
-
-
 }

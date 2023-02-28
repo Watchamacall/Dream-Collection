@@ -35,7 +35,7 @@ public class PlayerRoot : PlayerBehavior
         }
 
 
-        if (!networkObject.IsOwner)
+        if (!networkObject.IsOwner) //Not the owner of the Object
         {
             //Destroy children to stop main client moving other clients.
             //This is done to allow for other clients to be mapped to the local client
