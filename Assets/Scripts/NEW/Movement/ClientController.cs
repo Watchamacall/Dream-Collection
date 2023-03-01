@@ -32,18 +32,19 @@ public class ClientController : MonoBehaviour
     [SerializeField, Tooltip("How fast the Altitude changes when in Flight Mode")]
     protected float altitudeChangeSpeed = 1.0f;
 
-    [SerializeField, Tooltip("How maximum speed the player can reach when moving")]
-    protected float maxMoveSpeed = 20.0f;
-
     [SerializeField, Tooltip("How fast the player accelerates")]
-    protected float moveSpeedAcceleration = 10.0f;
+    protected float moveSpeed = 10.0f;
+
+    [SerializeField, Tooltip("The force the player will jump at")]
+    protected float jumpForce = 10.0f;
 
     [SerializeField, Tooltip("The Vector we wish to move the player in")]
     protected Vector3 movementDirection = Vector3.zero;
 
-    public Canvas unPausedCanvas;
-    public Canvas pausedCanvas;
+    [SerializeField, Tooltip("The speed the player will rotate towards the movement direction"), Range(0,1)]
+    protected float rotationSpeed = 0.5f;
 
+    private bool bIsGrounded = true;
 
     private void OnEnable()
     {
@@ -70,51 +71,101 @@ public class ClientController : MonoBehaviour
         inputController.Movement.Altitude.canceled += context => AltitudeChange(context);
 
         //TODO: Make this more generic and able to be used like Blueprints
-        inputController.Constant.Pause.performed += context => PauseGame();
-
-    }
-
-    private void PauseGame()
-    {
-        ui_Manager.SetCanvas(pausedCanvas);
     }
 
     private void Update()
     {
         //TODO: Move character in the movementDirection vector
+
         Vector3 cameraForwardDirection = Vector3.ProjectOnPlane(Camera.main.transform.forward, Vector3.up); //Get's the Camera's forward Vector in the world
 
         Quaternion rotationToCamera = Quaternion.LookRotation(cameraForwardDirection, Vector3.up);
-
+        Debug.Log(rotationToCamera.ToString());
         Vector3 directionToMoveTowards = rotationToCamera * movementDirection;
 
         Quaternion rotationToMoveDirection = directionToMoveTowards != Vector3.zero ? Quaternion.LookRotation(directionToMoveTowards,Vector3.up) : new Quaternion();
 
-        Quaternion.RotateTowards(transform.rotation, rotationToCamera, 100.0f);
-        
-        transform.rotation = rotationToCamera;
-        transform.position += (directionToMoveTowards * moveSpeedAcceleration) * Time.deltaTime;
+        if (movementDirection != Vector3.zero) //Move the player capsule only when moving
+            transform.rotation = Quaternion.Lerp(transform.rotation, rotationToMoveDirection, rotationSpeed);
+
+        Vector3 finalDirection = new Vector3
+            (
+                directionToMoveTowards.x * moveSpeed, 
+                directionToMoveTowards.y * altitudeChangeSpeed, 
+                directionToMoveTowards.z * moveSpeed
+            );
+
+        transform.position += finalDirection * Time.deltaTime;
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (!collision.collider.CompareTag("Enemy"))
+            bIsGrounded = true;
+    }
+    private void OnCollisionExit(Collision collision)
+    {
+        bIsGrounded = false;
+    }
+
+    /// <summary>
+    /// Set's the state to <paramref name="newMode"/> and completes any necessary details based on that
+    /// </summary>
+    /// <param name="newMode">The mode to switch to</param>
+    protected void SetState(EMovementModes newMode)
+    {
+        currentState = newMode;
+
+        switch (currentState)
+        {
+            case EMovementModes.Ground:
+                movementDirection.y = 0;
+                break;
+            case EMovementModes.Flying:
+
+                break;
+            default:
+                break;
+        }
+    }
     #region Dynamic Input Events
+    /// <summary>
+    /// Get's the context and set's the forward vector
+    /// </summary>
+    /// <param name="context"></param>
     private void ForwardMovement(CallbackContext context)
     {
         movementDirection.z = context.ReadValue<float>();
     }
+    /// <summary>
+    /// Get's the context and set's the right vector
+    /// </summary>
+    /// <param name="context"></param>
     private void RightMovement(CallbackContext context)
     {
         movementDirection.x = context.ReadValue<float>();
     }
-
+    /// <summary>
+    /// Get's the context and changes the control mode
+    /// </summary>
+    /// <param name="context"></param>
     private void AttemptFlight(CallbackContext context)
     {
-        currentState = currentState == EMovementModes.Ground ? EMovementModes.Flying : EMovementModes.Ground;
+        SetState(currentState == EMovementModes.Ground ? EMovementModes.Flying : EMovementModes.Ground);
     }
+    /// <summary>
+    /// Get's the context and set's the up vector
+    /// </summary>
+    /// <param name="context"></param>
     private void AltitudeChange(CallbackContext context) 
     {
         if (currentState == EMovementModes.Flying)
         {
             movementDirection.y = context.ReadValue<float>();
+        }
+        else if (currentState == EMovementModes.Ground && context.ReadValue<float>() > 0 && !bIsGrounded)
+        {
+            rb.AddForce(Vector3.up * jumpForce);
         }
     }
     #endregion
