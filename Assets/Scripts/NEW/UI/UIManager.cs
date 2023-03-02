@@ -30,6 +30,7 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         clientController = GetComponent<ClientController>();
+
         clientController.InputController.Constant.Pause.performed += context => GamePaused();
 
         SetCanvas(startCanvas);
@@ -47,7 +48,7 @@ public class UIManager : MonoBehaviour
 
             if (canvasToSet == canvas)
             {
-                canvas.enabled = true;
+                canvas.gameObject.SetActive(true);
 
                 currentCanvas = canvas;
 
@@ -55,7 +56,7 @@ public class UIManager : MonoBehaviour
             }
             else
             {
-                canvas.enabled = false;
+                canvas.gameObject.SetActive(false);
             }
         }
     }
@@ -108,12 +109,8 @@ public class UIManager : MonoBehaviour
     {
         Debug.Log("Called Function!");
         if (CurrentCanvas(currentCanvas).pauseWorld)
-        {
             playGame.Invoke();
-        }
         else
-        {
             pauseGame.Invoke();
-        }
     }
 }

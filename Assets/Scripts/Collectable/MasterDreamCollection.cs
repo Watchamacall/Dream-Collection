@@ -37,7 +37,7 @@ public class MasterDreamCollection : ScoreTallyBehavior
     /// <returns>True is can be spawned, false otherwise</returns>
     public bool CanSpawn()
     {
-        return dreams.Count < maxDreams ? true : false;
+        return dreams.Count < maxDreams;
     }
 
     private void Update()

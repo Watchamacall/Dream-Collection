@@ -56,11 +56,13 @@ public class DreamSpawner : DreamSpawnerBehavior
     public IEnumerator SpawnDelay(float delayTime)
     {
         float time = 0.0f;
+
         while (time < delayTime)
         {
             time += Time.deltaTime;
             yield return null;
         }
+
         ChanceToSpawn();
         StartCoroutine(SpawnDelay(Random.Range(minTime, maxTime)));
 

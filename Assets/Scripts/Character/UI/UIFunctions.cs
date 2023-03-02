@@ -5,6 +5,10 @@ using BeardedManStudios.Forge.Networking.Unity;
 using UnityEngine.SceneManagement;
 public class UIFunctions : MonoBehaviour
 {
+    /*
+     * Handles all the UI Element information Client-wise
+     */
+
     public GameObject playCanvas;
     public GameObject pauseCanvas;
     public GameObject optionsCanvas;

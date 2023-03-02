@@ -575,13 +575,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1372544600965554823}
-        m_TargetAssemblyTypeName: UIFunctions, Assembly-CSharp
-        m_MethodName: CanvasChange
-        m_Mode: 1
+      - m_Target: {fileID: 7088012880743736050}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: SetCanvas
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 6697578102276310026}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Canvas, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -2935,8 +2935,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4047618433282362855}
-  m_LocalRotation: {x: -0.0010808272, y: -0.39665243, z: -0.0004670224, w: 0.91796815}
-  m_LocalPosition: {x: 7.4925075, y: 1.4823754, z: -7.051162}
+  m_LocalRotation: {x: -0.0011420214, y: -0.2433452, z: -0.00028651932, w: 0.96993905}
+  m_LocalPosition: {x: 4.8568716, y: 1.4823754, z: -9.070135}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4047618434090299933}
@@ -3317,7 +3317,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4047618433795904957}
-  m_LocalRotation: {x: 0.036818378, y: -0.2572675, z: 0.009809737, w: 0.96558875}
+  m_LocalRotation: {x: 0.03681838, y: -0.25726748, z: 0.009809737, w: 0.96558875}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -3502,11 +3502,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4047618434090299933}
-  - component: {fileID: 4047618434090299938}
   - component: {fileID: 3146405532519026639}
-  - component: {fileID: 1604700467082458705}
+  - component: {fileID: 4350404609231704491}
+  - component: {fileID: 7088012880743736050}
   - component: {fileID: 4047618434090299932}
   - component: {fileID: 4047618434090299937}
+  - component: {fileID: 4047618434090299938}
   - component: {fileID: 5872493223509269859}
   - component: {fileID: 5016316233049546529}
   - component: {fileID: 1372544600965554823}
@@ -3536,28 +3537,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4047618434090299938
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4047618434090299934}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 318fd546075011548a14933a36491571, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  movDir: {x: 0, y: 0, z: 0}
-  altitudeChange: 1
-  movSpeed: 10
-  maxMovSpeed: 20
-  rotSpeed: 360
-  constRot: 0
-  transformMov: 0
-  slider: {fileID: 5467403267310757019}
-  maxHealth: 100
-  health: 0
 --- !u!114 &3146405532519026639
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3570,13 +3549,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2ecc3ea20d04fb4d914ba3c495e9423, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ui_Manager: {fileID: 1604700467082458705}
-  altitudeChangeSpeed: 1
-  moveSpeed: 10
-  jumpForce: 10
+  ui_Manager: {fileID: 0}
+  altitudeChangeSpeed: 10
+  maxMoveSpeed: 10
+  moveSpeedAcceleration: 10
+  jumpForce: 1000
   movementDirection: {x: 0, y: 0, z: 0}
   rotationSpeed: 0.2
---- !u!114 &1604700467082458705
+  bIsGrounded: 1
+--- !u!114 &4350404609231704491
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4047618434090299934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc83a83048c8dad4c8270a104285541f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerName: 
+  playerColour: {r: 0, g: 0, b: 0, a: 0}
+--- !u!114 &7088012880743736050
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3599,7 +3594,7 @@ MonoBehaviour:
   pauseGame:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1604700467082458705}
+      - m_Target: {fileID: 7088012880743736050}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: SetCanvas
         m_Mode: 2
@@ -3614,7 +3609,7 @@ MonoBehaviour:
   playGame:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1604700467082458705}
+      - m_Target: {fileID: 7088012880743736050}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: SetCanvas
         m_Mode: 2
@@ -3656,6 +3651,28 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &4047618434090299938
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4047618434090299934}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 318fd546075011548a14933a36491571, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movDir: {x: 0, y: 0, z: 0}
+  altitudeChange: 1
+  movSpeed: 10
+  maxMovSpeed: 20
+  rotSpeed: 360
+  constRot: 0
+  transformMov: 0
+  slider: {fileID: 5467403267310757019}
+  maxHealth: 100
+  health: 0
 --- !u!114 &5872493223509269859
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3724,7 +3741,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4047618434191463484}
-  m_LocalRotation: {x: 0.07186904, y: -0.25674134, z: 0.01914849, w: 0.9636141}
+  m_LocalRotation: {x: 0.071869045, y: -0.25674137, z: 0.01914849, w: 0.96361405}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -4419,9 +4436,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1372544600965554823}
-        m_TargetAssemblyTypeName: UIFunctions, Assembly-CSharp
-        m_MethodName: Leave
+      - m_Target: {fileID: 4350404609231704491}
+        m_TargetAssemblyTypeName: ServerInformation, Assembly-CSharp
+        m_MethodName: LeaveGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5992,13 +6009,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1372544600965554823}
-        m_TargetAssemblyTypeName: UIFunctions, Assembly-CSharp
-        m_MethodName: Resume
-        m_Mode: 1
+      - m_Target: {fileID: 7088012880743736050}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: SetCanvas
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 1977520622}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Canvas, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -7061,13 +7078,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1372544600965554823}
-        m_TargetAssemblyTypeName: UIFunctions, Assembly-CSharp
-        m_MethodName: CanvasChange
-        m_Mode: 1
+      - m_Target: {fileID: 7088012880743736050}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: SetCanvas
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 5720567973954398616}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Canvas, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
