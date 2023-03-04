@@ -19,7 +19,7 @@ public class DamagePlayer : Node
         this.damageCooldown = damageCooldown;
     }
 
-    public override NodeState Evaluate()
+    public override NodeState Evaluate(BT_Blackboard blackboard)
     {
         
         if (canDamage)

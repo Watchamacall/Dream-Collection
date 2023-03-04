@@ -7,8 +7,8 @@ public class IsPlayerAssigned : Node
     /*
      * Return Failure if player is not assigned, SUCCESS if assigned
      */
-    public override NodeState Evaluate()
+    public override NodeState Evaluate(BT_Blackboard blackboard)
     {
-        throw new System.NotImplementedException();
+        return blackboard.Target == null ? NodeState.FAILURE : NodeState.SUCCESS;
     }
 }

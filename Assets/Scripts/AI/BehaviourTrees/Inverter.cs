@@ -12,9 +12,9 @@ public class Inverter : Node
         this.node = node; //Constructor
     }
 
-    public override NodeState Evaluate()
+    public override NodeState Evaluate(BT_Blackboard blackboard)
     {
-        switch (node.Evaluate())
+        switch (node.Evaluate(blackboard))
         {
             case NodeState.RUNNING:
                 _nodeState = NodeState.RUNNING;

@@ -9,7 +9,8 @@ public class DreamsManager : MonoBehaviour
      * Handles all the spawned in Dreams and stores them to be accessed and checked around (Host Only)
      */
 
-    public static DreamsManager instance;
+    protected static DreamsManager instance;
+    public static DreamsManager Instance { get { return instance; } }
 
     [SerializeField, Tooltip("The DreamObjects in the world")]
     protected List<DreamObjectBase> dreamObjects;

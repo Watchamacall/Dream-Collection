@@ -43,7 +43,7 @@ public class DreamSpawnerNew : DreamSpawnerBehavior
     {
         if (canPass) //Time is up and 
         {
-            if (DreamsManager.instance.CanAddDream())
+            if (DreamsManager.Instance.CanAddDream())
             {
                 if (Random.Range(rangeZero, rangeHundred) < spawnChance && !spawnedDream)
                 {

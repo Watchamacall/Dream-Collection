@@ -13,12 +13,14 @@ public class NightmareAI : MonoBehaviour
     [SerializeField] private float moveSpeed;
     [SerializeField] private Color chaseGizmosColour = Color.red;
     [SerializeField] private Color damageGizmosColour = Color.blue;
+    BT_Blackboard blackboard;
 
     private Node topNode;
 
     // Start is called before the first frame update
     void Start()
     {
+        blackboard = new BT_Blackboard(this.transform);
         playerTransform = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         ConstructBehaviourTree();   
     }
@@ -26,7 +28,7 @@ public class NightmareAI : MonoBehaviour
 
     void Update()
     {
-        topNode.Evaluate();
+        topNode.Evaluate(blackboard);
     }
 
     private void ConstructBehaviourTree()

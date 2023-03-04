@@ -16,13 +16,13 @@ public class Sequence : Node
     /// Evaluate all nodes in "nodes". Fails if one fails or returns running if a node is running else success
     /// </summary>
     /// <returns>Fail if one node fails. Running if one or more is running. Success if none of the above are done</returns>
-    public override NodeState Evaluate()
+    public override NodeState Evaluate(BT_Blackboard blackboard)
     {
         bool isAnyNodeRunning = false; //Check to see if any children are running
 
         foreach (Node node in nodes)
         {
-            switch (node.Evaluate())
+            switch (node.Evaluate(blackboard))
             {
                 case NodeState.RUNNING:
                     isAnyNodeRunning = true;

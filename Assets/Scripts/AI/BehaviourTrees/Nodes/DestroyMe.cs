@@ -11,7 +11,7 @@ public class DestroyMe : Node
         this.origin = origin;
     }
 
-    public override NodeState Evaluate()
+    public override NodeState Evaluate(BT_Blackboard blackboard)
     {
         try
         {

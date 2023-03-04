@@ -15,11 +15,11 @@ public class Selector : Node
     /// Evaluate the nodes currently in "nodes". Will fail only if all nodes fail
     /// </summary>
     /// <returns>First node that is Running or Successful</returns>
-    public override NodeState Evaluate()
+    public override NodeState Evaluate(BT_Blackboard blackboard)
     {
         foreach (Node node in nodes)
         {
-            switch (node.Evaluate())
+            switch (node.Evaluate(blackboard))
             {
                 case NodeState.RUNNING:
                     _nodeState = NodeState.RUNNING;

@@ -15,7 +15,7 @@ public class IsPlayerInRange : Node
         this.maxThreshold = maxThreshold;
     }
 
-    public override NodeState Evaluate()
+    public override NodeState Evaluate(BT_Blackboard blackboard)
     {
         return Vector3.Distance(origin.position, target.position) <= maxThreshold ? NodeState.SUCCESS : NodeState.FAILURE;
     }

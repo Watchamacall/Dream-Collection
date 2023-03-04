@@ -12,7 +12,7 @@ public abstract class Node
         get { return _nodeState; }
     }
 
-    public abstract NodeState Evaluate();
+    public abstract NodeState Evaluate(BT_Blackboard blackboard);
 }
 
 public enum NodeState

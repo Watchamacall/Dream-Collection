@@ -14,7 +14,7 @@ public class ChasePlayer : Node
         this.moveSpeed = moveSpeed;
     }
 
-    public override NodeState Evaluate()
+    public override NodeState Evaluate(BT_Blackboard blackboard)
     {
         origin.position = Vector3.MoveTowards(origin.position, target.position, moveSpeed);
         return NodeState.RUNNING;
