@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class BT_Nightmare : MonoBehaviour
 {
+    /*
+     * TODO: Setup a Blackboard and change Evaluate to require the Blackboard to run, use Blackboard for all information like origin, target. Use Ai itself for things like radius and that
+     */
     [SerializeField, Tooltip("The player currently being chased")]
     protected Transform chasePlayer;
 
