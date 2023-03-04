@@ -15,6 +15,7 @@ public class NightmareAI : MonoBehaviour
     [SerializeField] private Color damageGizmosColour = Color.blue;
 
     private Node topNode;
+
     // Start is called before the first frame update
     void Start()
     {

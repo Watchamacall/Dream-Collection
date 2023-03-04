@@ -1,3 +1,4 @@
+using BeardedManStudios.Forge.Networking.Unity;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,15 +26,14 @@ public class DreamsManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Returns true if it can spawn in the object and spawns it in otherwise returns false
+    /// Returns true if it can spawn in the object otherwise returns false
     /// </summary>
-    /// <param name="dreamObject">The object you are trying to spawn in</param>
+    /// <param name="spawnedDreamObject">The object you are trying to spawn in</param>
     /// <returns></returns>
-    public bool TryAddDream(DreamObjectBase dreamObject)
+    public bool TryAddDream(GameObject spawnedDreamObject)
     {
         if (CanAddDream())
         {
-            dreamObjects.Add(dreamObject);
             return true;
         }
         return false;
@@ -43,7 +43,7 @@ public class DreamsManager : MonoBehaviour
     /// Returns true if you can Add a dream to the DreamObjects List
     /// </summary>
     /// <returns>True if can spawn object in, false otherwise</returns>
-    protected bool CanAddDream()
+    public bool CanAddDream()
     {
         return dreamObjects.Count < maxDreamCount;
     }

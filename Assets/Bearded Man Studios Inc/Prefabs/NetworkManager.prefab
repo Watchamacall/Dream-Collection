@@ -48,6 +48,7 @@ MonoBehaviour:
   CubeForgeGameNetworkObject: []
   DreamObjectNetworkObject:
   - {fileID: 8050883656914964396, guid: 3ac4ef52f8b63ba4fb1774db59bf331d, type: 3}
+  - {fileID: 8984117135642536710, guid: 0316f0cf027712e4da5126bbd71d0055, type: 3}
   DreamSpawnerNetworkObject: []
   ExampleProximityPlayerNetworkObject:
   - {fileID: 1000012738253334, guid: feb25ecf90a8d8b4ab922a455249997b, type: 3}
@@ -55,5 +56,7 @@ MonoBehaviour:
   - {fileID: 139536, guid: 661f29f0c0c86fa47b6015bd602d0ac6, type: 3}
   PlayerNetworkObject:
   - {fileID: 4047618434090299934, guid: c13e7af65a6430244acb2ae1b03246cc, type: 3}
+  ScoreTallyNetworkObject: []
   TestNetworkObject: []
+  DreamObjectBaseNetworkObject: []
   automaticScenes: 1

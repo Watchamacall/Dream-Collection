@@ -31,6 +31,10 @@ namespace BeardedManStudios.Forge.Networking.Generated
 						availableCallback = true;
 						obj = new CubeForgeGameNetworkObject(networker, id, frame);
 						break;
+					case DreamObjectBaseNetworkObject.IDENTITY:
+						availableCallback = true;
+						obj = new DreamObjectBaseNetworkObject(networker, id, frame);
+						break;
 					case DreamObjectNetworkObject.IDENTITY:
 						availableCallback = true;
 						obj = new DreamObjectNetworkObject(networker, id, frame);
@@ -58,10 +62,6 @@ namespace BeardedManStudios.Forge.Networking.Generated
 					case TestNetworkObject.IDENTITY:
 						availableCallback = true;
 						obj = new TestNetworkObject(networker, id, frame);
-						break;
-					case DreamObjectBaseNetworkObject.IDENTITY:
-						availableCallback = true;
-						obj = new DreamObjectBaseNetworkObject(networker, id, frame);
 						break;
 				}
 

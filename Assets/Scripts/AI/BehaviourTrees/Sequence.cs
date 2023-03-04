@@ -12,6 +12,10 @@ public class Sequence : Node
         this.nodes = nodes; //Constructor
     }
 
+    /// <summary>
+    /// Evaluate all nodes in "nodes". Fails if one fails or returns running if a node is running else success
+    /// </summary>
+    /// <returns>Fail if one node fails. Running if one or more is running. Success if none of the above are done</returns>
     public override NodeState Evaluate()
     {
         bool isAnyNodeRunning = false; //Check to see if any children are running

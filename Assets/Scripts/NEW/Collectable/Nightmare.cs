@@ -8,15 +8,20 @@ public class Nightmare : DreamObjectBase
      * Follow the player and send object's position and rotation
      */
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
-        
+        //Only send updates if Server, otherwise will make AI freak out
+        if (networkObject.IsServer)
+        {
+            networkObject.position = transform.position;
+            networkObject.rotation = transform.rotation;
+        }
+        else
+        {
+            transform.position = networkObject.position;
+            transform.rotation = networkObject.rotation;
+        }
     }
 }

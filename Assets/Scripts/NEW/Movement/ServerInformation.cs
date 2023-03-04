@@ -32,4 +32,21 @@ public class ServerInformation : PlayerBehavior
         Destroy(this.gameObject);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
     }
+
+    public void LateUpdate()
+    {
+        if (networkObject != null)
+        {
+            if (!networkObject.IsOwner)
+            {
+                networkObject.position = transform.position;
+                networkObject.rotation = transform.rotation;
+            }
+            else
+            {
+                transform.position = networkObject.position;
+                transform.rotation = networkObject.rotation;
+            }
+        }
+    }
 }

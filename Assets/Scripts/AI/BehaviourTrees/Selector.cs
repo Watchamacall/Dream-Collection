@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Selector : Node
 {
-
     protected List<Node> nodes = new List<Node>(); //The list of nodes in which we will be sequencing through
 
     public Selector(List<Node> nodes)
@@ -12,9 +11,12 @@ public class Selector : Node
         this.nodes = nodes; //Constructor
     }
 
+    /// <summary>
+    /// Evaluate the nodes currently in "nodes". Will fail only if all nodes fail
+    /// </summary>
+    /// <returns>First node that is Running or Successful</returns>
     public override NodeState Evaluate()
     {
-
         foreach (Node node in nodes)
         {
             switch (node.Evaluate())
