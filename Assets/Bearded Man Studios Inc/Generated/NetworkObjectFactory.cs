@@ -35,10 +35,6 @@ namespace BeardedManStudios.Forge.Networking.Generated
 						availableCallback = true;
 						obj = new DreamObjectBaseNetworkObject(networker, id, frame);
 						break;
-					case DreamObjectNetworkObject.IDENTITY:
-						availableCallback = true;
-						obj = new DreamObjectNetworkObject(networker, id, frame);
-						break;
 					case DreamSpawnerNetworkObject.IDENTITY:
 						availableCallback = true;
 						obj = new DreamSpawnerNetworkObject(networker, id, frame);
@@ -62,6 +58,10 @@ namespace BeardedManStudios.Forge.Networking.Generated
 					case TestNetworkObject.IDENTITY:
 						availableCallback = true;
 						obj = new TestNetworkObject(networker, id, frame);
+						break;
+					case NightmareObjectNetworkObject.IDENTITY:
+						availableCallback = true;
+						obj = new NightmareObjectNetworkObject(networker, id, frame);
 						break;
 				}
 

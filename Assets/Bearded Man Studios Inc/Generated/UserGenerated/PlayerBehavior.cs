@@ -4,10 +4,11 @@ using UnityEngine;
 
 namespace BeardedManStudios.Forge.Networking.Generated
 {
-	[GeneratedRPC("{\"types\":[]")]
-	[GeneratedRPCVariableNames("{\"types\":[]")]
+	[GeneratedRPC("{\"types\":[[\"string\", \"Color\"]]")]
+	[GeneratedRPCVariableNames("{\"types\":[[\"playerName\", \"playerColour\"]]")]
 	public abstract partial class PlayerBehavior : NetworkBehavior
 	{
+		public const byte RPC_SEND_PLAYER_INFORMATION = 0 + 5;
 		
 		public PlayerNetworkObject networkObject = null;
 
@@ -21,6 +22,7 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			networkObject.AttachedBehavior = this;
 
 			base.SetupHelperRpcs(networkObject);
+			networkObject.RegisterRpc("SendPlayerInformation", SendPlayerInformation, typeof(string), typeof(Color));
 
 			networkObject.onDestroy += DestroyGameObject;
 
@@ -97,6 +99,12 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			networkObject.SnapInterpolations();
 		}
 
+		/// <summary>
+		/// Arguments:
+		/// string playerName
+		/// Color playerColour
+		/// </summary>
+		public abstract void SendPlayerInformation(RpcArgs args);
 
 		// DO NOT TOUCH, THIS GETS GENERATED PLEASE EXTEND THIS CLASS IF YOU WISH TO HAVE CUSTOM CODE ADDITIONS
 	}

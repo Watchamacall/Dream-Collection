@@ -1,23 +1,33 @@
+using BeardedManStudios.Forge.Networking.Generated;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem.XInput;
 
+//Enum for elements in the UI, match them to the number of elements you will have in the array
+public enum EUIUnique
+{
+    CANVAS_Main,
+    CANVAS_Pause,
+    CANVAS_Options,
+    CANVAS_Dead,
+}
 [System.Serializable]
-public struct UIElement
+public struct FUIElement
 {
     public Canvas canvas;
     public bool pauseWorld;
-
+    public EUIUnique ui_Enum;
 }
 public class UIManager : MonoBehaviour
 {
     [Tooltip("The canvases that are in the game")]
-    public UIElement[] canvases;
+    public FUIElement[] canvases;
 
-    public Canvas startCanvas;
+    public EUIUnique startCanvasEnum;
 
     public UnityEvent pauseGame;
     public UnityEvent playGame;
@@ -33,8 +43,9 @@ public class UIManager : MonoBehaviour
 
         clientController.InputController.Constant.Pause.performed += context => GamePaused();
 
-        SetCanvas(startCanvas);
+        SetCanvas(startCanvasEnum);
     }
+
 
     /// <summary>
     /// Sets the <paramref name="canvasToSet"/> as the main Canvas active
@@ -42,7 +53,7 @@ public class UIManager : MonoBehaviour
     /// <param name="canvasToSet">The Canvas to be the main one active</param>
     public void SetCanvas(Canvas canvasToSet)
     {
-        foreach (UIElement ui_Element in canvases)
+        foreach (FUIElement ui_Element in canvases)
         {
             Canvas canvas = ui_Element.canvas;
 
@@ -61,21 +72,27 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void SetCanvas(EUIUnique ui_Unique)
+    {
+        SetCanvas(canvases.Where(canvas => canvas.ui_Enum == ui_Unique).First().canvas);
+    }
+
     /// <summary>
     /// Returns the UIElement which <paramref name="currentCanvas"/> is being held in
     /// </summary>
     /// <param name="currentCanvas">The canvas you want the UIElement from</param>
     /// <returns>The UIElement <paramref name="currentCanvas"/> is being held in</returns>
-    public UIElement CurrentCanvas(Canvas currentCanvas)
+    public FUIElement CurrentCanvas(Canvas currentCanvas)
     {
-        foreach (UIElement element in canvases)
+        return canvases.Where(canvas => canvas.canvas == currentCanvas).First();
+        foreach (FUIElement element in canvases)
         {
             if (element.canvas == currentCanvas)
             {
                 return element;
             }
         }
-        return new UIElement();
+        return new FUIElement();
     }
 
     /// <summary>

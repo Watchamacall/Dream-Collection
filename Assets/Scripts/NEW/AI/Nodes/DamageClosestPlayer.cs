@@ -6,11 +6,16 @@ public class DamageClosestPlayer : Node
 {
     float damageToDo;
 
+    public DamageClosestPlayer(float damageToDo)
+    {
+        this.damageToDo = damageToDo;
+    }
      /*
       * Return RUNNING if player damaged, failure if not
       */   
     public override NodeState Evaluate(BT_Blackboard blackboard)
     {
-        blackboard.Target.
+        blackboard.Target.GetComponent<ClientController>().Health -= damageToDo;
+        return NodeState.SUCCESS;
     }
 }

@@ -5,6 +5,7 @@ using static UnityEngine.InputSystem.InputAction;
 using UnityEngine.UI;
 using TMPro;
 using BeardedManStudios.Forge.Networking.Generated;
+using BeardedManStudios.Forge.Networking;
 
 public enum MovementState
 {
@@ -177,5 +178,10 @@ public class Move : PlayerBehavior
         {
             isGrounded = false;
         }
+    }
+
+    public override void SendPlayerInformation(RpcArgs args)
+    {
+        throw new System.NotImplementedException();
     }
 }

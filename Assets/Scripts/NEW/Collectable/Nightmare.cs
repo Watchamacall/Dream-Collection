@@ -1,8 +1,9 @@
+using BeardedManStudios.Forge.Networking.Generated;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Nightmare : DreamObjectBase
+public class Nightmare : NightmareObjectBehavior
 {
     /*
      * Follow the player and send object's position and rotation

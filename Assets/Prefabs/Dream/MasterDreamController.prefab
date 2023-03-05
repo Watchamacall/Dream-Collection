@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7764397931797691215}
   - component: {fileID: 7764397931797691208}
+  - component: {fileID: 4874512227416415492}
+  - component: {fileID: 250677973180933967}
   m_Layer: 0
   m_Name: MasterDreamController
   m_TagString: Untagged
@@ -38,10 +40,37 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7764397931797691209}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 87822a1f62fa75640bef3cf1aef6c503, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  textbox: {fileID: 0}
   maxDreams: 5
   dreams: []
+--- !u!114 &4874512227416415492
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7764397931797691209}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5edfb042c674a24d8489d12cdcb6579, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dreamObjects: []
+  maxDreamCount: 10
+--- !u!114 &250677973180933967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7764397931797691209}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 578b96ac569865642964a63f028c9c83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

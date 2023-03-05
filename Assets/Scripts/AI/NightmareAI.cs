@@ -20,7 +20,7 @@ public class NightmareAI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        blackboard = new BT_Blackboard(this.transform);
+        blackboard = new BT_Blackboard(this.transform, "Player");
         playerTransform = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         ConstructBehaviourTree();   
     }

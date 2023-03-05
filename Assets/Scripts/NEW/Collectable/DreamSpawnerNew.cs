@@ -15,8 +15,8 @@ public class DreamSpawnerNew : DreamSpawnerBehavior
         protected int minSpawnTime;
     [SerializeField, Tooltip("The maximum time for a chance to spawn a Dream in")]
         protected int maxSpawnTime;
-    [SerializeField, Tooltip("The Prefab which is associated with a Dream")]
-        protected GameObject prefabToSpawn;
+    [SerializeField, Tooltip("The DreamObject Prefab Element Number in the \"Dream Object Network Object\" in \"Assets/Bearded Man Studios Inc/Prefabs/NetworkManager\"")]
+        protected int prefabElementNumber;
     [SerializeField, Tooltip("The chance to spawn a Dream in"), Range(0,100)]
         protected int spawnChance;
     [SerializeField, Tooltip("The object currently spawned in")]
@@ -37,7 +37,6 @@ public class DreamSpawnerNew : DreamSpawnerBehavior
             StartCoroutine(Delay(Random.Range(minSpawnTime, maxSpawnTime)));
         }
     }
-
 
     void Update()
     {
@@ -74,10 +73,11 @@ public class DreamSpawnerNew : DreamSpawnerBehavior
 
     public override void Spawn(RpcArgs args)
     {
-        if (args.GetNext<bool>() == true) //If this can spawn an object in
+        if (args.GetNext<bool>() == true && networkObject.IsServer) //If this can spawn an object in
         {
-            spawnedDream = GameObject.Instantiate(prefabToSpawn, this.transform.position, this.transform.rotation).GetComponent<DreamObjectBase>(); //Spawn in object at location
-            //DreamObjectBehavior spawnedDream = NetworkManager.Instance.InstantiateDreamObject(0, this.transform.position, this.transform.rotation);
+            spawnedDream = NetworkManager.Instance.InstantiateDreamObjectBase(prefabElementNumber, this.transform.position, this.transform.rotation).GetComponent<DreamObjectBase>(); //Spawn in object at location
+
+            DreamsManager.Instance.AddDream(spawnedDream);
         }
     }
 }

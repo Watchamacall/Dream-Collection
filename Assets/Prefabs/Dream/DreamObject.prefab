@@ -91,7 +91,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 6829613556245558668}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 0.5
   m_Height: 2
   m_Direction: 1
@@ -108,7 +108,6 @@ GameObject:
   - component: {fileID: 8050883656914964387}
   - component: {fileID: 8050883656914964384}
   - component: {fileID: 8050883656914964385}
-  - component: {fileID: 8050883656914964398}
   - component: {fileID: 5635052680394917792}
   m_Layer: 0
   m_Name: DreamObject
@@ -189,28 +188,12 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8050883656914964396}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 0.5
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8050883656914964398
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8050883656914964396}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58a7143aee8c4504a82e3e90597d59b0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  scoreChance: 20
-  nightmare: {fileID: 8984117135642536710, guid: 0316f0cf027712e4da5126bbd71d0055,
-    type: 3}
-  scoreAdd: 0.5
 --- !u!114 &5635052680394917792
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -225,3 +208,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerTag: Player
   rotationSpeed: 60
+  nightmareChance: 20
+  nightmareArrayElement: 0
+  score: 1

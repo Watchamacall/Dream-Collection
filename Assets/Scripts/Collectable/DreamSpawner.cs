@@ -70,19 +70,20 @@ public class DreamSpawner : DreamSpawnerBehavior
 
     public override void Spawn(RpcArgs args)
     {
-        DreamObjectBehavior temp = null;
-        //Debug.Log(args.GetNext<bool>());
-        if (args.GetNext<bool>() == true)
-        {
-            temp = NetworkManager.Instance.InstantiateDreamObject();
-            
-            temp.transform.position = this.transform.position;
-            temp.transform.parent = this.transform;
+        //    DreamObjectBehavior temp = null;
+        //    //Debug.Log(args.GetNext<bool>());
+        //    if (args.GetNext<bool>() == true)
+        //    {
+        //        temp = NetworkManager.Instance.InstantiateDreamObject();
 
-            //temp.transform.localScale = dreamObjectScale;
-            temp.transform.localPosition += dreamObjectOffset;
+        //        temp.transform.position = this.transform.position;
+        //        temp.transform.parent = this.transform;
 
-            master.Add(temp.GetComponent<DreamObject>());
-        }
+        //        //temp.transform.localScale = dreamObjectScale;
+        //        temp.transform.localPosition += dreamObjectOffset;
+
+        //        master.Add(temp.GetComponent<DreamObject>());
+        //    }
+        //}
     }
 }

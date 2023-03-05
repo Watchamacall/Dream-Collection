@@ -4,12 +4,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using static UnityEngine.InputSystem.InputAction;
+
 
 public class ClientController : MonoBehaviour
 {
     /*
-     * Allows for Client Player Movement
+     * Allows for Client Player Movement, removed if not the client
      */
 
     public enum EMovementModes
@@ -19,6 +21,8 @@ public class ClientController : MonoBehaviour
     }
 
     private Rigidbody rb;
+    private Camera clientCamera;
+    private ServerInformation serverInformation;
     private EMovementModes currentState = EMovementModes.Ground;
     
     [SerializeField, Tooltip("The MainPlayerController responsible for Client movement")]
@@ -34,6 +38,33 @@ public class ClientController : MonoBehaviour
     { 
         get { return ui_Manager; } 
     }
+    [Space]
+
+    [SerializeField, Tooltip("The maximum health the player has")]
+    protected int maxHealth = 10;
+    [SerializeField, Tooltip("The current health of the player")]
+    protected float health;
+    public float Health
+    {
+        get
+        {
+            return health;
+        }
+        set
+        {
+            health = Mathf.Clamp(value, 0.0f, maxHealth);
+
+            if (health <= 0.0f)
+            {
+                KillPlayer();
+            }
+            healthSlider.value = health;
+        }
+    }
+    [SerializeField, Tooltip("The slider representing the Health of the user")]
+    protected Slider healthSlider;
+
+    [Space]
 
     [SerializeField, Tooltip("How fast the Altitude changes when in Flight Mode")]
     protected float altitudeChangeSpeed = 1.0f;
@@ -60,6 +91,9 @@ public class ClientController : MonoBehaviour
 
     private void OnEnable()
     {
+        serverInformation = GetComponent<ServerInformation>();
+
+        
         rb = GetComponent<Rigidbody>();
 
         if (inputController == null)
@@ -68,6 +102,7 @@ public class ClientController : MonoBehaviour
         }
 
         ui_Manager = GetComponent<UIManager>();
+        clientCamera = GetComponent<Camera>();
 
         inputController.Constant.Enable();
 
@@ -82,12 +117,27 @@ public class ClientController : MonoBehaviour
         //Alitiude performed and cancelled
         inputController.Movement.Altitude.performed += context => AltitudeChange(context);
         inputController.Movement.Altitude.canceled += context => AltitudeChange(context);
-
+        
+        healthSlider.maxValue = maxHealth;
+        Health = maxHealth;
     }
 
-
+    private void Start()
+    {
+        if (serverInformation.networkObject.IsOwner)
+        {
+            return;
+        }
+        Destroy(rb);
+        Destroy(ui_Manager);
+        Destroy(clientCamera); //Maybe not delete this one, can use it for spectating
+    }
     private void Update()
     {
+        if (!serverInformation.networkObject.IsOwner)
+        {
+            return;
+        }
         //TODO: Move character in the movementDirection vector
 
         Vector3 cameraForwardDirection = Vector3.ProjectOnPlane(Camera.main.transform.forward, Vector3.up); //Get's the Camera's forward Vector in the world
@@ -190,6 +240,12 @@ public class ClientController : MonoBehaviour
             default:
                 break;
         }
+    }
+
+    private void KillPlayer()
+    {
+        ui_Manager.SetCanvas(EUIUnique.CANVAS_Dead);
+        inputController.Movement.Disable();
     }
     #region Dynamic Input Events
     /// <summary>

@@ -16,14 +16,19 @@ public class DreamObjectBase : DreamObjectBaseBehavior
     [SerializeField, Tooltip("The tag the player is bound to")]
     protected string playerTag = "Player";
 
-    [SerializeField, Tooltip("Speed of rotation")]
+    [SerializeField, Tooltip("How fast the object rotates")]
     protected float rotationSpeed;
-
+    [Space]
     [SerializeField, Tooltip("The chance of becoming a Nightmare"), Range(0,100)]
     protected int nightmareChance;
 
-    [SerializeField, Tooltip("The element number the Nightmare is in the \"Dream Object Network Object\" in \"Assets/Bearded Man Studios Inc/Prefabs/NetworkManager\"")]
-    protected int nightmareArrayElement = 1;
+    [SerializeField, Tooltip("The element number the Nightmare is in the \"Nightmare Object Network Object\" in \"Assets/Bearded Man Studios Inc/Prefabs/NetworkManager\"")]
+    protected int nightmareArrayElement = 0;
+
+    [Space]
+
+    [SerializeField, Tooltip("The score to add if this Dream Object is a Dream")]
+    protected float score = 1;
 
     private static readonly int rangeZero = 0;
     private static readonly int rangeHundred = 100;
@@ -40,20 +45,23 @@ public class DreamObjectBase : DreamObjectBaseBehavior
             transform.rotation = networkObject.rotation;
         }
     }
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider collider)
     {
-        if (collision.collider.CompareTag(playerTag))
+        if (collider.CompareTag(playerTag))
         {
             if (Random.Range(rangeZero, rangeHundred) < nightmareChance) //If can spawn nightmare
             {
                 //Spawn nightmare
-                NetworkManager.Instance.InstantiateDreamObjectBase(nightmareArrayElement, this.transform.position); //Spawn Nightmare for all players
-                networkObject.SendRpc(RPC_DESTROY_OBJECT, Receivers.AllBuffered, true);
+                //TODO: Fix this since it gives a "Instance not found for a net variable thingy, no idea why it doesn't actually exist, could be something to do with this object itself being instanciated at runtime?
+                var nightmare = NetworkManager.Instance.InstantiateNightmareObject(nightmareArrayElement, this.transform.position); //Spawn Nightmare for all players
             }
             else
             {
                 //Complete Dream
+                collider.GetComponent<ScoreTally>().networkObject.Score += score;
             }
+            networkObject.SendRpc(RPC_DESTROY_OBJECT, Receivers.AllBuffered, true);
+
         }
     }
 
@@ -61,6 +69,7 @@ public class DreamObjectBase : DreamObjectBaseBehavior
     {
         if (args.GetNext<bool>() == true) //If destroy is called
         {
+            DreamsManager.Instance.RemoveDream(this);
             Destroy(this.gameObject);
         }
     }

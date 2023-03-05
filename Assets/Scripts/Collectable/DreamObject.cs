@@ -4,7 +4,7 @@ using UnityEngine;
 using BeardedManStudios.Forge.Networking.Generated;
 using BeardedManStudios.Forge.Networking;
 
-public class DreamObject : DreamObjectBehavior
+public class DreamObject : MonoBehaviour
 {
     MasterDreamCollection master;
 
@@ -56,7 +56,7 @@ public class DreamObject : DreamObjectBehavior
         if (collision.gameObject.CompareTag("Player"))
         {
             float rand = Random.Range(0, 100);
-            networkObject.SendRpc(RPC_NIGHTMARE, Receivers.AllBuffered, rand < scoreChance ? false : true);
+            //networkObject.SendRpc(RPC_NIGHTMARE, Receivers.AllBuffered, rand < scoreChance ? false : true);
         }
     }
 
@@ -64,13 +64,13 @@ public class DreamObject : DreamObjectBehavior
     /// Spawns in a Nightmare or Destorys the dream based on <paramref name="args"/>
     /// </summary>
     /// <param name="args">Arguments recieved through RPC</param>
-    public override void Nightmare(RpcArgs args)
-    {
-        //Next element
-        if (args.GetNext<bool>())
-            NightmareSpawn();
-        else
-            DreamDestory();
-    }
+    //public override void Nightmare(RpcArgs args)
+    //{
+    //    //Next element
+    //    if (args.GetNext<bool>())
+    //        NightmareSpawn();
+    //    else
+    //        DreamDestory();
+    //}
 
 }

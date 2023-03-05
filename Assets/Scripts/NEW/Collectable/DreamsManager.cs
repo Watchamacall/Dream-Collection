@@ -31,13 +31,14 @@ public class DreamsManager : MonoBehaviour
     /// </summary>
     /// <param name="spawnedDreamObject">The object you are trying to spawn in</param>
     /// <returns></returns>
-    public bool TryAddDream(GameObject spawnedDreamObject)
+    public void AddDream(DreamObjectBase spawnedDreamObject)
     {
-        if (CanAddDream())
-        {
-            return true;
-        }
-        return false;
+        dreamObjects.Add(spawnedDreamObject);
+    }
+
+    public void RemoveDream(DreamObjectBase spawnedDreamObject)
+    {
+        dreamObjects.Remove(spawnedDreamObject);
     }
 
     /// <summary>

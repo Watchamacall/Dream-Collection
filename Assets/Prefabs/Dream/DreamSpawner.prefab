@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1717443066395578575}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.5, y: 1.193, z: 0}
+  m_LocalPosition: {x: -1, y: 2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8570754949593565624}
@@ -45,8 +45,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minSpawnTime: 2
   maxSpawnTime: 5
-  prefabToSpawn: {fileID: 0}
-  spawnChance: 100
+  prefabElementNumber: 0
+  spawnChance: 20
   spawnedDream: {fileID: 0}
 --- !u!1 &1900918588770433034
 GameObject:
