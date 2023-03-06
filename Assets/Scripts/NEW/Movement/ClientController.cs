@@ -128,9 +128,6 @@ public class ClientController : MonoBehaviour
         {
             return;
         }
-        Destroy(rb);
-        Destroy(ui_Manager);
-        Destroy(clientCamera); //Maybe not delete this one, can use it for spectating
     }
     private void Update()
     {

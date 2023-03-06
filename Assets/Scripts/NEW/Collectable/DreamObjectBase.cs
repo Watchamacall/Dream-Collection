@@ -22,6 +22,11 @@ public class DreamObjectBase : DreamObjectBaseBehavior
     [SerializeField, Tooltip("The chance of becoming a Nightmare"), Range(0,100)]
     protected int nightmareChance;
 
+    [SerializeField, Tooltip("The multiplier that will be added onto this object when a player touches it")]
+    protected float touchSpinMultiplier;
+    [SerializeField, Tooltip("The rotationSpeed that will cause either a dream score to be added or a nightmare to spawn")]
+    protected float spinFinishSpeed;
+
     [SerializeField, Tooltip("The element number the Nightmare is in the \"Nightmare Object Network Object\" in \"Assets/Bearded Man Studios Inc/Prefabs/NetworkManager\"")]
     protected int nightmareArrayElement = 0;
 
@@ -49,28 +54,39 @@ public class DreamObjectBase : DreamObjectBaseBehavior
     {
         if (collider.CompareTag(playerTag))
         {
-            if (Random.Range(rangeZero, rangeHundred) < nightmareChance) //If can spawn nightmare
-            {
-                //Spawn nightmare
-                //TODO: Fix this since it gives a "Instance not found for a net variable thingy, no idea why it doesn't actually exist, could be something to do with this object itself being instanciated at runtime?
-                var nightmare = NetworkManager.Instance.InstantiateNightmareObject(nightmareArrayElement, this.transform.position); //Spawn Nightmare for all players
-            }
-            else
-            {
-                //Complete Dream
-                collider.GetComponent<ScoreTally>().networkObject.Score += score;
-            }
-            networkObject.SendRpc(RPC_DESTROY_OBJECT, Receivers.AllBuffered, true);
-
+            StartCoroutine(SpinUp(collider));
         }
+    }
+
+    public IEnumerator SpinUp(Collider collider)
+    {
+
+        while (rotationSpeed < spinFinishSpeed)
+        {
+            rotationSpeed += touchSpinMultiplier * Time.deltaTime;
+            yield return null;
+        }
+        if (Random.Range(rangeZero, rangeHundred) < nightmareChance) //If can spawn nightmare
+        {
+            //Spawn nightmare
+            //TODO: Fix this since it gives a "Instance not found for a net variable thingy, no idea why it doesn't actually exist, could be something to do with this object itself being instanciated at runtime
+            var nightmare = NetworkManager.Instance.InstantiateNightmareObject(nightmareArrayElement, this.transform.position); //Spawn Nightmare for all players
+        }
+        else
+        {
+            //Complete Dream
+            collider.GetComponent<ScoreTally>().UpdateScore(score);
+        }
+        networkObject.SendRpc(RPC_DESTROY_OBJECT, Receivers.AllBuffered, true);
     }
 
     public override void DestroyObject(RpcArgs args)
     {
-        if (args.GetNext<bool>() == true) //If destroy is called
+        if (args.GetNext<bool>() == true && networkObject.IsServer) //If destroy is called
         {
             DreamsManager.Instance.RemoveDream(this);
-            Destroy(this.gameObject);
         }
+        Destroy(this.gameObject);
+
     }
 }

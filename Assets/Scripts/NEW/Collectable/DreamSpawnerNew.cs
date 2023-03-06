@@ -76,7 +76,6 @@ public class DreamSpawnerNew : DreamSpawnerBehavior
         if (args.GetNext<bool>() == true && networkObject.IsServer) //If this can spawn an object in
         {
             spawnedDream = NetworkManager.Instance.InstantiateDreamObjectBase(prefabElementNumber, this.transform.position, this.transform.rotation).GetComponent<DreamObjectBase>(); //Spawn in object at location
-
             DreamsManager.Instance.AddDream(spawnedDream);
         }
     }

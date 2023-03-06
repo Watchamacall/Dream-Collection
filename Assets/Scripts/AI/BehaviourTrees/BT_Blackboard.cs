@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BT_Blackboard : MonoBehaviour
+public class BT_Blackboard
 {
     protected Transform origin;
     protected Transform target;

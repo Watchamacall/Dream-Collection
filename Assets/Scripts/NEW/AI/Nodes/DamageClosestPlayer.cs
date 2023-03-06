@@ -15,7 +15,7 @@ public class DamageClosestPlayer : Node
       */   
     public override NodeState Evaluate(BT_Blackboard blackboard)
     {
-        blackboard.Target.GetComponent<ClientController>().Health -= damageToDo;
+        blackboard.Target.GetComponent<ClientController>().Health -= damageToDo * Time.deltaTime;
         return NodeState.SUCCESS;
     }
 }

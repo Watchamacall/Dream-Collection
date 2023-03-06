@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Street.unity
     guid: 76264a60e4fb2934f84f8a65c89ab32d
   - enabled: 1
+    path: Assets/Scenes/Testing/Test_AI.unity
+    guid: 39910c2d893254f498acd4319e472e17
+  - enabled: 1
     path: Assets/Scenes/Testing/Test_Collectable_Player.unity
     guid: 255c34609c009214d9b223322d430821
   - enabled: 1

@@ -58,5 +58,5 @@ MonoBehaviour:
   ScoreTallyNetworkObject: []
   TestNetworkObject: []
   NightmareObjectNetworkObject:
-  - {fileID: 8984117135642536710, guid: 0316f0cf027712e4da5126bbd71d0055, type: 3}
+  - {fileID: 6895515634788028178, guid: 7464cee0a286a4f429fff0cb3c451112, type: 3}
   automaticScenes: 1

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using BeardedManStudios.Forge.Networking.Generated;
 using TMPro;
+using BeardedManStudios.Forge.Networking;
+
 public class MasterDreamCollection : ScoreTallyBehavior
 {
     public TextMeshProUGUI textbox;
@@ -57,5 +59,10 @@ public class MasterDreamCollection : ScoreTallyBehavior
     public void UpdateScore(float amount)
     {
         networkObject.Score += amount;
+    }
+
+    public override void NewScore(RpcArgs args)
+    {
+        throw new System.NotImplementedException();
     }
 }

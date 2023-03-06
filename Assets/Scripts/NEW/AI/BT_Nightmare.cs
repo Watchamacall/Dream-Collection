@@ -28,9 +28,18 @@ public class BT_Nightmare : MonoBehaviour
 
         #region Damage Player Sequence
         IsPlayerClose damageCloseCheck = new IsPlayerClose(damageRange);
+
+        #region Set Player Damage Selector
+        IsPlayerAssigned damagePlayerAssigned = new IsPlayerAssigned();
+        
+        SetPlayer setPlayerDamage = new SetPlayer();
+
+        Selector setPlayerDamageSelector = new Selector(new List<Node> { damagePlayerAssigned, setPlayerDamage });
+        #endregion
+
         DamageClosestPlayer damageClosestPlayer = new DamageClosestPlayer(damageToDo);
 
-        Sequence damagePlayerSequence = new Sequence(new List<Node> { damageCloseCheck, damageClosestPlayer });
+        Sequence damagePlayerSequence = new Sequence(new List<Node> { damageCloseCheck, setPlayerDamageSelector, damageClosestPlayer });
         #endregion
 
         #region Chase Player Sequence

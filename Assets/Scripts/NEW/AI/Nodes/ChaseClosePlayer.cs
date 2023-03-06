@@ -21,7 +21,7 @@ public class ChaseClosePlayer : Node
 
     public override NodeState Evaluate(BT_Blackboard blackboard)
     {
-        blackboard.Origin.position = Vector3.MoveTowards(blackboard.Origin.position, blackboard.Target.position, moveSpeed);
+        blackboard.Origin.position = Vector3.MoveTowards(blackboard.Origin.position, blackboard.Target.position, moveSpeed * Time.deltaTime);
         return NodeState.RUNNING;
     }
 }

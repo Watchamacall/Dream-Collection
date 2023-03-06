@@ -7,5 +7,8 @@ using TMPro;
 
 public class ScoreUpdate : ScoreTallyBehavior
 {
-
+    public override void NewScore(RpcArgs args)
+    {
+        throw new System.NotImplementedException();
+    }
 }
