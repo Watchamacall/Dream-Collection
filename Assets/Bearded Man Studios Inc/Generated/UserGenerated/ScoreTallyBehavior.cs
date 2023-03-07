@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace BeardedManStudios.Forge.Networking.Generated
 {
-	[GeneratedRPC("{\"types\":[[\"float\"]]")]
-	[GeneratedRPCVariableNames("{\"types\":[[\"addedScore\"]]")]
+	[GeneratedRPC("{\"types\":[[]]")]
+	[GeneratedRPCVariableNames("{\"types\":[[]]")]
 	public abstract partial class ScoreTallyBehavior : NetworkBehavior
 	{
 		public const byte RPC_NEW_SCORE = 0 + 5;
@@ -22,7 +22,7 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			networkObject.AttachedBehavior = this;
 
 			base.SetupHelperRpcs(networkObject);
-			networkObject.RegisterRpc("NewScore", NewScore, typeof(float));
+			networkObject.RegisterRpc("NewScore", NewScore);
 
 			networkObject.onDestroy += DestroyGameObject;
 
@@ -101,7 +101,6 @@ namespace BeardedManStudios.Forge.Networking.Generated
 
 		/// <summary>
 		/// Arguments:
-		/// float addedScore
 		/// </summary>
 		public abstract void NewScore(RpcArgs args);
 

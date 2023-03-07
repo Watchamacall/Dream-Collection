@@ -15,6 +15,11 @@ public class PlayerRoot : PlayerBehavior
     [Tooltip("The child of this object which holds the model")]
     GameObject modelObj;
 
+    public override void DestroyPlayer(RpcArgs args)
+    {
+        throw new System.NotImplementedException();
+    }
+
     public override void SendPlayerInformation(RpcArgs args)
     {
         throw new System.NotImplementedException();

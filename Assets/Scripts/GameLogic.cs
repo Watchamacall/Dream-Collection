@@ -4,9 +4,11 @@ using UnityEngine;
 using BeardedManStudios.Forge.Networking.Unity;
 public class GameLogic : MonoBehaviour
 {
-    // Start is called before the first frame update
+    /// <summary>
+    /// Instanciates Networked Player
+    /// </summary>
     void Start()
     {
-        NetworkManager.Instance.InstantiatePlayer();
+        NetworkManager.Instance.InstantiatePlayer(0, this.transform.position, this.transform.rotation);
     }
 }

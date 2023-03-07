@@ -1,5 +1,6 @@
 using BeardedManStudios.Forge.Networking;
 using BeardedManStudios.Forge.Networking.Generated;
+using BeardedManStudios.Forge.Networking.Unity;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using UnityEngine.UI;
 using static UnityEngine.InputSystem.InputAction;
 
 
-public class ClientController : MonoBehaviour
+public class ClientController : PlayerControllerBehavior
 {
     /*
      * Allows for Client Player Movement, removed if not the client
@@ -20,6 +21,7 @@ public class ClientController : MonoBehaviour
         Flying = 1,
     }
 
+    #region Private
     private Rigidbody rb;
     private Camera clientCamera;
     private ServerInformation serverInformation;
@@ -38,34 +40,11 @@ public class ClientController : MonoBehaviour
     { 
         get { return ui_Manager; } 
     }
-    [Space]
-
-    [SerializeField, Tooltip("The maximum health the player has")]
-    protected int maxHealth = 10;
-    [SerializeField, Tooltip("The current health of the player")]
-    protected float health;
-    public float Health
-    {
-        get
-        {
-            return health;
-        }
-        set
-        {
-            health = Mathf.Clamp(value, 0.0f, maxHealth);
-
-            if (health <= 0.0f)
-            {
-                KillPlayer();
-            }
-            healthSlider.value = health;
-        }
-    }
-    [SerializeField, Tooltip("The slider representing the Health of the user")]
-    protected Slider healthSlider;
+    #endregion
 
     [Space]
-
+    
+    #region Protected Vars
     [SerializeField, Tooltip("How fast the Altitude changes when in Flight Mode")]
     protected float altitudeChangeSpeed = 1.0f;
 
@@ -83,29 +62,36 @@ public class ClientController : MonoBehaviour
 
     [SerializeField, Tooltip("The speed the player will rotate towards the movement direction"), Range(0,1)]
     protected float rotationSpeed = 0.5f;
-
+    #endregion
     [SerializeField]
     private bool bIsGrounded = true;
 
     private Quaternion playerRotation;
 
-    private void OnEnable()
+    /// <summary>
+    /// Called when the Network has just been opened up
+    /// </summary>
+    protected override void NetworkStart()
     {
+        base.NetworkStart();
+
+        if (!networkObject.IsOwner) //Do not continue if not the Owner, will stop any "Object Reference not found" errors
+            return;
+
         serverInformation = GetComponent<ServerInformation>();
 
-        
         rb = GetComponent<Rigidbody>();
 
-        if (inputController == null)
-        {
+        if (inputController == null) //Since not Monobehaviour, instanciate in memory if null
             inputController = new MainPlayerController();
-        }
 
         ui_Manager = GetComponent<UIManager>();
+        ui_Manager.clientController = this;
         clientCamera = GetComponent<Camera>();
 
+        #region Controller Setup
         inputController.Constant.Enable();
-
+        
         //Forward Movement Performed and Cancelled
         inputController.Movement.Forward.performed += context => ForwardMovement(context);
         inputController.Movement.Forward.canceled += context => ForwardMovement(context);
@@ -117,40 +103,45 @@ public class ClientController : MonoBehaviour
         //Alitiude performed and cancelled
         inputController.Movement.Altitude.performed += context => AltitudeChange(context);
         inputController.Movement.Altitude.canceled += context => AltitudeChange(context);
-        
-        healthSlider.maxValue = maxHealth;
-        Health = maxHealth;
+
+        inputController.Constant.Pause.performed += context => ui_Manager.GamePaused();
+        #endregion
+        ui_Manager.SetCanvas(ui_Manager.startCanvasEnum);
     }
 
-    private void Start()
+    private void OnDisable()
     {
-        if (serverInformation.networkObject.IsOwner)
-        {
+        if (inputController == null)
             return;
-        }
+        //Forward Movement Performed and Cancelled
+        inputController.Movement.Forward.performed -= context => ForwardMovement(context);
+        inputController.Movement.Forward.canceled -= context => ForwardMovement(context);
+        //Right Movement Performed and Cancelled
+        inputController.Movement.Right.performed -= context => RightMovement(context);
+        inputController.Movement.Right.canceled -= context => RightMovement(context);
+        //Flight performed, no cancel since it go bye bye
+        inputController.Movement.Flight.performed -= context => AttemptFlight(context);
+        //Alitiude performed and cancelled
+        inputController.Movement.Altitude.performed -= context => AltitudeChange(context);
+        inputController.Movement.Altitude.canceled -= context => AltitudeChange(context);
     }
+
     private void Update()
     {
-        if (!serverInformation.networkObject.IsOwner)
-        {
-            return;
-        }
-        //TODO: Move character in the movementDirection vector
-
         Vector3 cameraForwardDirection = Vector3.ProjectOnPlane(Camera.main.transform.forward, Vector3.up); //Get's the Camera's forward Vector in the world
 
         Quaternion rotationToCamera = Quaternion.LookRotation(cameraForwardDirection, Vector3.up); //Turn to Quaternion
 
-        Vector3 directionToMoveTowards = rotationToCamera * movementDirection; //Get the direction we want to move towards
+        Vector3 directionToMoveTowards = rotationToCamera * movementDirection; //Get the direction we want to move towards in Vector3
 
-        if (movementDirection != Vector3.zero)
+        if (movementDirection != Vector3.zero) //Only set's rotation if moving, stops player turning constantly
         {
             playerRotation = Quaternion.LookRotation(directionToMoveTowards, Vector3.up); //Get the rotation the player should meet
         }
 
         Vector3 finalDirection = new Vector3();
 
-        switch (currentState)
+        switch (currentState) //Different finalDirection setups for eithr Ground or Flying.
         {
             case EMovementModes.Ground:
 
@@ -160,7 +151,7 @@ public class ClientController : MonoBehaviour
                     directionToMoveTowards.y,
                     directionToMoveTowards.z * moveSpeedAcceleration
                 );
-                //Rotation stays on the y axis to not make it look weird
+                //Rotate only on Y axis when Ground, stops Diagonal/Upright player rotation
                 playerRotation.x = 0;
                 playerRotation.z = 0;
 
@@ -180,30 +171,27 @@ public class ClientController : MonoBehaviour
                 break;
         }
 
+        //Player would look diagonal until moving again if this isn't here
         if (movementDirection == Vector3.zero)
         {
-            //The movement would stay at that velocity so reset if movement is zero
             playerRotation.x = 0;
             playerRotation.z = 0;
         }
 
-        transform.rotation = Quaternion.Lerp(transform.rotation, playerRotation, rotationSpeed);
+        transform.rotation = Quaternion.Lerp(transform.rotation, playerRotation, rotationSpeed); //Lerp towards camera forward
 
-        //if (movementDirection != Vector3.zero) //Move the player capsule only when moving
-        //    transform.rotation = Quaternion.Lerp(transform.rotation, rotationToMoveDirection, rotationSpeed);
-
-        transform.position += finalDirection * Time.deltaTime;
+        transform.position += finalDirection * Time.deltaTime; //Move Player in finalDirection based on deltaTime
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.collider.CompareTag("Ground"))
-        {
+        if (networkObject == null) //Stops any errors when first instanciating this GameObject
+            return;
+
+        if (collision.collider.CompareTag("Ground") && networkObject.IsOwner) //Only attempt to change states if Owner
+        { 
             bIsGrounded = true;
-            if (currentState == EMovementModes.Flying)
-            {
-                SetState(EMovementModes.Ground);
-            }
+            SetState(currentState == EMovementModes.Flying ? EMovementModes.Ground : EMovementModes.Flying);
         }
     }
     private void OnCollisionExit(Collision collision)
@@ -217,11 +205,8 @@ public class ClientController : MonoBehaviour
     /// <param name="newMode">The mode to switch to</param>
     protected void SetState(EMovementModes newMode)
     {
-
         if (newMode == currentState)
-        {
             return;
-        }
 
         currentState = newMode;
 
@@ -239,16 +224,11 @@ public class ClientController : MonoBehaviour
         }
     }
 
-    private void KillPlayer()
-    {
-        ui_Manager.SetCanvas(EUIUnique.CANVAS_Dead);
-        inputController.Movement.Disable();
-    }
     #region Dynamic Input Events
     /// <summary>
     /// Get's the context and set's the forward vector
     /// </summary>
-    /// <param name="context"></param>
+    /// <param name="context">1 for Forward, 0 for Neutral, -1 for Backwards</param>
     private void ForwardMovement(CallbackContext context)
     {
         movementDirection.z = context.ReadValue<float>();
@@ -256,7 +236,7 @@ public class ClientController : MonoBehaviour
     /// <summary>
     /// Get's the context and set's the right vector
     /// </summary>
-    /// <param name="context"></param>
+    /// <param name="context">1 for Right, 0 for Neutral, -1 for Left</param>
     private void RightMovement(CallbackContext context)
     {
         movementDirection.x = context.ReadValue<float>();
@@ -264,7 +244,7 @@ public class ClientController : MonoBehaviour
     /// <summary>
     /// Get's the context and changes the control mode
     /// </summary>
-    /// <param name="context"></param>
+    /// <param name="context">1 for Pressed, 0 for UnPressed</param>
     private void AttemptFlight(CallbackContext context)
     {
         SetState(currentState == EMovementModes.Ground ? EMovementModes.Flying : EMovementModes.Ground);
@@ -272,16 +252,14 @@ public class ClientController : MonoBehaviour
     /// <summary>
     /// Get's the context and set's the up vector
     /// </summary>
-    /// <param name="context"></param>
+    /// <param name="context">1 for Positive, 0 for Neutral, -1 for Negative</param>
     private void AltitudeChange(CallbackContext context) 
     {
         switch (currentState)
         {
             case EMovementModes.Ground:
                 if (bIsGrounded && context.ReadValue<float>() > 0)
-                {
                     rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-                }
                 break;
             case EMovementModes.Flying:
                 movementDirection.y = context.ReadValue<float>();

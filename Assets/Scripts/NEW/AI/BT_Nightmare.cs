@@ -1,3 +1,4 @@
+using BeardedManStudios;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,9 +6,8 @@ using UnityEngine;
 public class BT_Nightmare : MonoBehaviour
 {
     /*
-     * TODO: Setup a Blackboard and change Evaluate to require the Blackboard to run, use Blackboard for all information like origin, target. Use Ai itself for things like radius and that
+     * Controls the AI and holds the BT itself
      */
-
     private BT_Blackboard blackboard;
     [SerializeField, Tooltip("How close does this AI have to be to damage the target?")]
     protected float damageRange = 5.0f;
@@ -15,17 +15,22 @@ public class BT_Nightmare : MonoBehaviour
     protected float chaseRange = 5.0f;
     [SerializeField, Tooltip("The tag the player has")]
     protected string playerTag = "Player";
-    [SerializeField, Tooltip("How much damage the AI does per hit")]
+    [SerializeField, Tooltip("How much damage the AI does per hit"), Range(-100, 0)]
     protected float damageToDo = 5.0f;
     [SerializeField, Tooltip("How fast this AI will move")]
     protected float moveSpeed = 10.0f;
 
     private Node root;
 
+    /// <summary>
+    /// Set's up the BT for the AI
+    /// </summary>
     private void Start()
     {
         blackboard = new BT_Blackboard(transform, playerTag);
-
+        /*
+         * Organised into Regions for ease of viewing
+         */
         #region Damage Player Sequence
         IsPlayerClose damageCloseCheck = new IsPlayerClose(damageRange);
 
@@ -79,6 +84,9 @@ public class BT_Nightmare : MonoBehaviour
         root.Evaluate(blackboard);
     }
 
+    /// <summary>
+    /// Debugging how large the radius of the AI's ranges are
+    /// </summary>
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;

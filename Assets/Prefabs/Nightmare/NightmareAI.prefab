@@ -57,10 +57,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84f58211423614e40821082303051d6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  blackboard: {fileID: 0}
   damageRange: 1
   chaseRange: 5
   playerTag: Player
-  damageToDo: 5
+  damageToDo: -10
   moveSpeed: 2
 --- !u!1 &8075628182632967046
 GameObject:

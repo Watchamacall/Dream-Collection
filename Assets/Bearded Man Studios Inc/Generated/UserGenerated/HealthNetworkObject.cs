@@ -6,9 +6,9 @@ using UnityEngine;
 namespace BeardedManStudios.Forge.Networking.Generated
 {
 	[GeneratedInterpol("{\"inter\":[0]")]
-	public partial class ScoreTallyNetworkObject : NetworkObject
+	public partial class HealthNetworkObject : NetworkObject
 	{
-		public const int IDENTITY = 13;
+		public const int IDENTITY = 6;
 
 		private byte[] _dirtyFields = new byte[1];
 
@@ -16,35 +16,35 @@ namespace BeardedManStudios.Forge.Networking.Generated
 		public event FieldChangedEvent fieldAltered;
 		#pragma warning restore 0067
 		[ForgeGeneratedField]
-		private float _Score;
-		public event FieldEvent<float> ScoreChanged;
-		public InterpolateFloat ScoreInterpolation = new InterpolateFloat() { LerpT = 0f, Enabled = false };
-		public float Score
+		private float _health;
+		public event FieldEvent<float> healthChanged;
+		public InterpolateFloat healthInterpolation = new InterpolateFloat() { LerpT = 0f, Enabled = false };
+		public float health
 		{
-			get { return _Score; }
+			get { return _health; }
 			set
 			{
 				// Don't do anything if the value is the same
-				if (_Score == value)
+				if (_health == value)
 					return;
 
 				// Mark the field as dirty for the network to transmit
 				_dirtyFields[0] |= 0x1;
-				_Score = value;
+				_health = value;
 				hasDirtyFields = true;
 			}
 		}
 
-		public void SetScoreDirty()
+		public void SethealthDirty()
 		{
 			_dirtyFields[0] |= 0x1;
 			hasDirtyFields = true;
 		}
 
-		private void RunChange_Score(ulong timestep)
+		private void RunChange_health(ulong timestep)
 		{
-			if (ScoreChanged != null) ScoreChanged(_Score, timestep);
-			if (fieldAltered != null) fieldAltered("Score", _Score, timestep);
+			if (healthChanged != null) healthChanged(_health, timestep);
+			if (fieldAltered != null) fieldAltered("health", _health, timestep);
 		}
 
 		protected override void OwnershipChanged()
@@ -55,24 +55,24 @@ namespace BeardedManStudios.Forge.Networking.Generated
 		
 		public void SnapInterpolations()
 		{
-			ScoreInterpolation.current = ScoreInterpolation.target;
+			healthInterpolation.current = healthInterpolation.target;
 		}
 
 		public override int UniqueIdentity { get { return IDENTITY; } }
 
 		protected override BMSByte WritePayload(BMSByte data)
 		{
-			UnityObjectMapper.Instance.MapBytes(data, _Score);
+			UnityObjectMapper.Instance.MapBytes(data, _health);
 
 			return data;
 		}
 
 		protected override void ReadPayload(BMSByte payload, ulong timestep)
 		{
-			_Score = UnityObjectMapper.Instance.Map<float>(payload);
-			ScoreInterpolation.current = _Score;
-			ScoreInterpolation.target = _Score;
-			RunChange_Score(timestep);
+			_health = UnityObjectMapper.Instance.Map<float>(payload);
+			healthInterpolation.current = _health;
+			healthInterpolation.target = _health;
+			RunChange_health(timestep);
 		}
 
 		protected override BMSByte SerializeDirtyFields()
@@ -81,7 +81,7 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			dirtyFieldsData.Append(_dirtyFields);
 
 			if ((0x1 & _dirtyFields[0]) != 0)
-				UnityObjectMapper.Instance.MapBytes(dirtyFieldsData, _Score);
+				UnityObjectMapper.Instance.MapBytes(dirtyFieldsData, _health);
 
 			// Reset all the dirty fields
 			for (int i = 0; i < _dirtyFields.Length; i++)
@@ -100,15 +100,15 @@ namespace BeardedManStudios.Forge.Networking.Generated
 
 			if ((0x1 & readDirtyFlags[0]) != 0)
 			{
-				if (ScoreInterpolation.Enabled)
+				if (healthInterpolation.Enabled)
 				{
-					ScoreInterpolation.target = UnityObjectMapper.Instance.Map<float>(data);
-					ScoreInterpolation.Timestep = timestep;
+					healthInterpolation.target = UnityObjectMapper.Instance.Map<float>(data);
+					healthInterpolation.Timestep = timestep;
 				}
 				else
 				{
-					_Score = UnityObjectMapper.Instance.Map<float>(data);
-					RunChange_Score(timestep);
+					_health = UnityObjectMapper.Instance.Map<float>(data);
+					RunChange_health(timestep);
 				}
 			}
 		}
@@ -118,10 +118,10 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			if (IsOwner)
 				return;
 
-			if (ScoreInterpolation.Enabled && !ScoreInterpolation.current.UnityNear(ScoreInterpolation.target, 0.0015f))
+			if (healthInterpolation.Enabled && !healthInterpolation.current.UnityNear(healthInterpolation.target, 0.0015f))
 			{
-				_Score = (float)ScoreInterpolation.Interpolate();
-				//RunChange_Score(ScoreInterpolation.Timestep);
+				_health = (float)healthInterpolation.Interpolate();
+				//RunChange_health(healthInterpolation.Timestep);
 			}
 		}
 
@@ -132,9 +132,9 @@ namespace BeardedManStudios.Forge.Networking.Generated
 
 		}
 
-		public ScoreTallyNetworkObject() : base() { Initialize(); }
-		public ScoreTallyNetworkObject(NetWorker networker, INetworkBehavior networkBehavior = null, int createCode = 0, byte[] metadata = null) : base(networker, networkBehavior, createCode, metadata) { Initialize(); }
-		public ScoreTallyNetworkObject(NetWorker networker, uint serverId, FrameStream frame) : base(networker, serverId, frame) { Initialize(); }
+		public HealthNetworkObject() : base() { Initialize(); }
+		public HealthNetworkObject(NetWorker networker, INetworkBehavior networkBehavior = null, int createCode = 0, byte[] metadata = null) : base(networker, networkBehavior, createCode, metadata) { Initialize(); }
+		public HealthNetworkObject(NetWorker networker, uint serverId, FrameStream frame) : base(networker, serverId, frame) { Initialize(); }
 
 		// DO NOT TOUCH, THIS GETS GENERATED PLEASE EXTEND THIS CLASS IF YOU WISH TO HAVE CUSTOM CODE ADDITIONS
 	}

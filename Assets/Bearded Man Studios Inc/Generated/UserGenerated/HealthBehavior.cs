@@ -4,14 +4,13 @@ using UnityEngine;
 
 namespace BeardedManStudios.Forge.Networking.Generated
 {
-	[GeneratedRPC("{\"types\":[[\"string\", \"Color\"][]]")]
-	[GeneratedRPCVariableNames("{\"types\":[[\"playerName\", \"playerColour\"][]]")]
-	public abstract partial class PlayerBehavior : NetworkBehavior
+	[GeneratedRPC("{\"types\":[[\"float\"]]")]
+	[GeneratedRPCVariableNames("{\"types\":[[\"changeHealth\"]]")]
+	public abstract partial class HealthBehavior : NetworkBehavior
 	{
-		public const byte RPC_SEND_PLAYER_INFORMATION = 0 + 5;
-		public const byte RPC_DESTROY_PLAYER = 1 + 5;
+		public const byte RPC_HEALTH_CHANGED = 0 + 5;
 		
-		public PlayerNetworkObject networkObject = null;
+		public HealthNetworkObject networkObject = null;
 
 		public override void Initialize(NetworkObject obj)
 		{
@@ -19,12 +18,11 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			if (networkObject != null && networkObject.AttachedBehavior != null)
 				return;
 			
-			networkObject = (PlayerNetworkObject)obj;
+			networkObject = (HealthNetworkObject)obj;
 			networkObject.AttachedBehavior = this;
 
 			base.SetupHelperRpcs(networkObject);
-			networkObject.RegisterRpc("SendPlayerInformation", SendPlayerInformation, typeof(string), typeof(Color));
-			networkObject.RegisterRpc("DestroyPlayer", DestroyPlayer);
+			networkObject.RegisterRpc("HealthChanged", HealthChanged, typeof(float));
 
 			networkObject.onDestroy += DestroyGameObject;
 
@@ -82,7 +80,7 @@ namespace BeardedManStudios.Forge.Networking.Generated
 
 		public override void Initialize(NetWorker networker, byte[] metadata = null)
 		{
-			Initialize(new PlayerNetworkObject(networker, createCode: TempAttachCode, metadata: metadata));
+			Initialize(new HealthNetworkObject(networker, createCode: TempAttachCode, metadata: metadata));
 		}
 
 		private void DestroyGameObject(NetWorker sender)
@@ -93,7 +91,7 @@ namespace BeardedManStudios.Forge.Networking.Generated
 
 		public override NetworkObject CreateNetworkObject(NetWorker networker, int createCode, byte[] metadata = null)
 		{
-			return new PlayerNetworkObject(networker, this, createCode, metadata);
+			return new HealthNetworkObject(networker, this, createCode, metadata);
 		}
 
 		protected override void InitializedTransform()
@@ -103,14 +101,9 @@ namespace BeardedManStudios.Forge.Networking.Generated
 
 		/// <summary>
 		/// Arguments:
-		/// string playerName
-		/// Color playerColour
+		/// float changeHealth
 		/// </summary>
-		public abstract void SendPlayerInformation(RpcArgs args);
-		/// <summary>
-		/// Arguments:
-		/// </summary>
-		public abstract void DestroyPlayer(RpcArgs args);
+		public abstract void HealthChanged(RpcArgs args);
 
 		// DO NOT TOUCH, THIS GETS GENERATED PLEASE EXTEND THIS CLASS IF YOU WISH TO HAVE CUSTOM CODE ADDITIONS
 	}

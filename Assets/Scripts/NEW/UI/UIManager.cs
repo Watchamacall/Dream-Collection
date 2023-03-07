@@ -15,6 +15,7 @@ public enum EUIUnique
     CANVAS_Options,
     CANVAS_Dead,
 }
+
 [System.Serializable]
 public struct FUIElement
 {
@@ -32,20 +33,9 @@ public class UIManager : MonoBehaviour
     public UnityEvent pauseGame;
     public UnityEvent playGame;
 
-    private Canvas currentCanvas;
+    protected Canvas currentCanvas;
 
-    private ClientController clientController;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        clientController = GetComponent<ClientController>();
-
-        clientController.InputController.Constant.Pause.performed += context => GamePaused();
-
-        SetCanvas(startCanvasEnum);
-    }
-
+    public ClientController clientController;
 
     /// <summary>
     /// Sets the <paramref name="canvasToSet"/> as the main Canvas active
@@ -85,14 +75,6 @@ public class UIManager : MonoBehaviour
     public FUIElement CurrentCanvas(Canvas currentCanvas)
     {
         return canvases.Where(canvas => canvas.canvas == currentCanvas).First();
-        foreach (FUIElement element in canvases)
-        {
-            if (element.canvas == currentCanvas)
-            {
-                return element;
-            }
-        }
-        return new FUIElement();
     }
 
     /// <summary>
@@ -122,9 +104,8 @@ public class UIManager : MonoBehaviour
     /// <summary>
     /// Called when the pause button has been pressed, either invokes playGame or pauseGame Unity Events
     /// </summary>
-    protected void GamePaused()
+    public void GamePaused()
     {
-        Debug.Log("Called Function!");
         if (CurrentCanvas(currentCanvas).pauseWorld)
             playGame.Invoke();
         else

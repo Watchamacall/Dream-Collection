@@ -6,25 +6,28 @@ using UnityEngine;
 public class IsPlayerClose : Node
 {
     /*
-     * Return SUCCESS if target is within maxThreshold of origin, FAILURE if not
+     * Node in the Nightmare's BT
+     * Returns SUCCESS if target is within maxThreshold of origin, FAILURE if not
      */
     protected float maxThreshold;
 
     /// <summary>
-    /// Returns Success if there is a player within <paramref name="maxThreshold"/> and <paramref name="origin"/>
+    /// Constructor for IsPlayerClose
     /// </summary>
-    /// <param name="player">The outputted player if in radius</param>
-    /// <param name="origin">The origin transform</param>
-    /// <param name="maxThreshold">How far out from <paramref name="origin"/> any <paramref name="player"/> can be</param>
+    /// <param name="maxThreshold">The max distance the AI will look at</param>
     public IsPlayerClose(float maxThreshold)
     {
         this.maxThreshold = maxThreshold;
     }
 
-
+    /// <summary>
+    /// Evaluation of this Node
+    /// </summary>
+    /// <param name="blackboard">The BT_Blackboard the parent Node uses</param>
+    /// <returns>SUCCESS if one or more player's are in radius, FAILURE if not</returns>
     public override NodeState Evaluate(BT_Blackboard blackboard)
     {
-        RaycastHit[] hits = Physics.SphereCastAll(blackboard.Origin.position, maxThreshold, Vector3.forward);
+        RaycastHit[] hits = Physics.SphereCastAll(blackboard.Origin.position, maxThreshold, Vector3.one);
 
         if (hits.Length > 0)
         {

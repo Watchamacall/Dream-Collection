@@ -3,6 +3,7 @@ using BeardedManStudios.Forge.Networking.Generated;
 using BeardedManStudios.Forge.Networking.Unity;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 using Quaternion = UnityEngine.Quaternion;
@@ -18,7 +19,9 @@ public class DreamObjectBase : DreamObjectBaseBehavior
 
     [SerializeField, Tooltip("How fast the object rotates")]
     protected float rotationSpeed;
+
     [Space]
+
     [SerializeField, Tooltip("The chance of becoming a Nightmare"), Range(0,100)]
     protected int nightmareChance;
 
@@ -35,12 +38,14 @@ public class DreamObjectBase : DreamObjectBaseBehavior
     [SerializeField, Tooltip("The score to add if this Dream Object is a Dream")]
     protected float score = 1;
 
+    [Space]
+    //Static Members for ints
     private static readonly int rangeZero = 0;
     private static readonly int rangeHundred = 100;
 
     private void Update()
     {
-        if (networkObject.IsServer)
+        if (networkObject.IsServer) //Only turning on the Server, keeps the rotation the same
         {
             transform.rotation *= Quaternion.AngleAxis(rotationSpeed * Time.deltaTime, Vector3.up); //Update Speed
             networkObject.rotation = transform.rotation;
@@ -50,43 +55,63 @@ public class DreamObjectBase : DreamObjectBaseBehavior
             transform.rotation = networkObject.rotation;
         }
     }
+    /// <summary>
+    /// When an Owner steps into the trigger, send RPC
+    /// </summary>
+    /// <param name="collider">The Owner which has stepped into it</param>
     private void OnTriggerEnter(Collider collider)
     {
         if (collider.CompareTag(playerTag))
         {
-            StartCoroutine(SpinUp(collider));
+            networkObject.SendRpc(RPC_PLAYER_HIT, Receivers.Server);
         }
     }
 
-    public IEnumerator SpinUp(Collider collider)
+    /// <summary>
+    /// Spins up the Object until it a certain point is reached, will either spawn Nightmare or Dream otherwise
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerator SpinUp()
     {
-
-        while (rotationSpeed < spinFinishSpeed)
+        while (rotationSpeed < spinFinishSpeed) //Spin faster until spinFinishSpeed has been reached
         {
             rotationSpeed += touchSpinMultiplier * Time.deltaTime;
             yield return null;
         }
-        if (Random.Range(rangeZero, rangeHundred) < nightmareChance) //If can spawn nightmare
+
+        if (Random.Range(rangeZero, rangeHundred) < nightmareChance) //If Nightmare can spawn
         {
-            //Spawn nightmare
-            //TODO: Fix this since it gives a "Instance not found for a net variable thingy, no idea why it doesn't actually exist, could be something to do with this object itself being instanciated at runtime
-            var nightmare = NetworkManager.Instance.InstantiateNightmareObject(nightmareArrayElement, this.transform.position); //Spawn Nightmare for all players
+            var nightmare = NetworkManager.Instance.InstantiateNightmareObject(nightmareArrayElement, this.transform.position); //Spawn Nightmare for all players, set to this DreamObjectBase's position
         }
-        else
+        else //Only a Dream
         {
-            //Complete Dream
-            collider.GetComponent<ScoreTally>().UpdateScore(score);
+            Score.Instance.UpdateScore(score);
         }
-        networkObject.SendRpc(RPC_DESTROY_OBJECT, Receivers.AllBuffered, true);
+        networkObject.SendRpc(RPC_DESTROY_OBJECT, Receivers.AllBuffered, true); //D
     }
 
+    /// <summary>
+    /// RPC call to destroy this Object on all Client's
+    /// </summary>
+    /// <param name="args">1 is whether or not to destroy this Object</param>
     public override void DestroyObject(RpcArgs args)
     {
-        if (args.GetNext<bool>() == true && networkObject.IsServer) //If destroy is called
+        if (args.GetNext<bool>() == true && networkObject.IsServer) //Only remove from the DreamsManager if Server
         {
             DreamsManager.Instance.RemoveDream(this);
         }
         Destroy(this.gameObject);
+    }
 
+    /// <summary>
+    /// RPC call to start the spinup process of the Object
+    /// </summary>
+    /// <param name="args">N/A</param>
+    public override void PlayerHit(RpcArgs args)
+    {
+        if (networkObject.IsServer) //Only the server will activate the Coroutine, keeps everybody on the same rotation
+        {
+            StartCoroutine(SpinUp());
+        }
     }
 }

@@ -9,8 +9,20 @@ public class Nightmare : NightmareObjectBehavior
      * Follow the player and send object's position and rotation
      */
 
+    /// <summary>
+    /// Destroy BT if not Server
+    /// </summary>
+    protected override void NetworkStart()
+    {
+        if (!networkObject.IsServer)
+        {
+            Destroy(GetComponent<BT_Nightmare>());
+        }
+    }
 
-    // Update is called once per frame
+    /// <summary>
+    /// Send or Recieve position/rotation based on whether Server or Client
+    /// </summary>
     void LateUpdate()
     {
         //Only send updates if Server, otherwise will make AI freak out

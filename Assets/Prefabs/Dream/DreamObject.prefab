@@ -209,5 +209,9 @@ MonoBehaviour:
   playerTag: Player
   rotationSpeed: 60
   nightmareChance: 20
+  touchSpinMultiplier: 1000
+  spinFinishSpeed: 2000
   nightmareArrayElement: 0
   score: 1
+  objectsToDestroy:
+  - {fileID: 8050883656914964385}

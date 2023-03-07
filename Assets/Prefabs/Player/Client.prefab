@@ -1349,7 +1349,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 500, y: -250}
-  m_SizeDelta: {x: 500, y: 99.997}
+  m_SizeDelta: {x: 500, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &8462173758930746044
 MonoBehaviour:
@@ -2119,7 +2119,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -905.32, y: 253.15}
+  m_AnchoredPosition: {x: -870, y: 270}
   m_SizeDelta: {x: 250, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1485574365660595182
@@ -3931,7 +3931,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4047618433795904957}
-  m_LocalRotation: {x: 0.03681838, y: -0.25726748, z: 0.009809737, w: 0.96558875}
+  m_LocalRotation: {x: 0.036818378, y: -0.2572675, z: 0.009809737, w: 0.96558875}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -4118,6 +4118,7 @@ GameObject:
   - component: {fileID: 4047618434090299933}
   - component: {fileID: 3146405532519026639}
   - component: {fileID: 4350404609231704491}
+  - component: {fileID: 3584446651693249218}
   - component: {fileID: 7088012880743736050}
   - component: {fileID: 8710680534291658480}
   - component: {fileID: 4047618434090299932}
@@ -4161,9 +4162,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ui_Manager: {fileID: 0}
-  maxHealth: 10
-  health: 0
-  healthSlider: {fileID: 8462173758930746044}
   altitudeChangeSpeed: 10
   maxMoveSpeed: 10
   moveSpeedAcceleration: 10
@@ -4186,9 +4184,27 @@ MonoBehaviour:
   playerName: 
   playerColour: {r: 0, g: 0, b: 0, a: 0}
   destroyElements:
+  - {fileID: 3146405532519026639}
   - {fileID: 7088012880743736050}
   - {fileID: 4047618434090299937}
   - {fileID: 7472653680994499679}
+  - {fileID: 4047618433282362855}
+  - {fileID: 4047618434324639917}
+  - {fileID: 8710680534291658480}
+--- !u!114 &3584446651693249218
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4047618434090299934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa791eb0d4d2f344090cfbb080c9e42d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  healthSlider: {fileID: 8462173758930746044}
 --- !u!114 &7088012880743736050
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4245,6 +4261,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  clientController: {fileID: 0}
 --- !u!114 &8710680534291658480
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4435,7 +4452,7 @@ MonoBehaviour:
   m_YAxis:
     Value: 0.5
     m_SpeedMode: 0
-    m_MaxSpeed: 2
+    m_MaxSpeed: 0.5
     m_AccelTime: 0.1
     m_DecelTime: 0.1
     m_InputAxisName: 
@@ -4459,7 +4476,7 @@ MonoBehaviour:
   m_XAxis:
     Value: 0
     m_SpeedMode: 0
-    m_MaxSpeed: 2
+    m_MaxSpeed: 300
     m_AccelTime: 0.1
     m_DecelTime: 0.1
     m_InputAxisName: 

@@ -22,25 +22,34 @@ public class DreamSpawnerNew : DreamSpawnerBehavior
     [SerializeField, Tooltip("The object currently spawned in")]
         protected DreamObjectBase spawnedDream;
 
-    private bool canPass = true;
-
     private float currentDelayedTime = 0.0f;
 
     private static readonly int rangeZero = 0;
     private static readonly int rangeHundred = 100;
 
-    void Start()
+    /// <summary>
+    /// Start the process of spawning in objects if Server, else Destroy script
+    /// </summary>
+    protected override void NetworkStart()
     {
-        //If server (host) actually do these things
-        if (networkObject.IsServer)
+        base.NetworkStart();
+
+        if (!networkObject.IsServer) //Not host, destroy this script
         {
-            StartCoroutine(Delay(Random.Range(minSpawnTime, maxSpawnTime)));
+            Destroy(this.gameObject);
+            return;
         }
+
+        StartCoroutine(Delay(Random.Range(minSpawnTime, maxSpawnTime)));
+
     }
 
-    void Update()
+    /// <summary>
+    /// Attempts to spawn in a DreamObject
+    /// </summary>
+    void AttemptSpawn()
     {
-        if (canPass) //Time is up and 
+        if (networkObject.IsServer)
         {
             if (DreamsManager.Instance.CanAddDream())
             {
@@ -49,28 +58,29 @@ public class DreamSpawnerNew : DreamSpawnerBehavior
                     networkObject.SendRpc(RPC_SPAWN, Receivers.AllBuffered, true); //Send a call to Client's that this DreamSpawner is spawning in
                 }
             }
-
-            StartCoroutine(Delay(Random.Range(minSpawnTime, maxSpawnTime)));
         }
     }
 
     /// <summary>
-    /// Stops anything within an "if (!canPass)" statement running until <paramref name="delayTime"/>delayTime has been passed, requires "StartCoroutine(Delay(delayTime)" in order to continually stop
+    /// Delay's function based on the <paramref name="delayTime"/> inputted
     /// </summary>
     /// <param name="delayTime">The time you want to delay</param>
     protected IEnumerator Delay(float delayTime)
     {
-        canPass = false;
-
         while (currentDelayedTime < delayTime)
         {
             currentDelayedTime += Time.deltaTime;
             yield return null;
         }
-
-        canPass = true;
+        AttemptSpawn();
+        currentDelayedTime = 0.0f; //Resetting the count otherwise game go brrrr
+        StartCoroutine(Delay(Random.Range(minSpawnTime, maxSpawnTime)));
     }
 
+    /// <summary>
+    /// Called when a DreamObject is spawned, only does this if a Server
+    /// </summary>
+    /// <param name="args"></param>
     public override void Spawn(RpcArgs args)
     {
         if (args.GetNext<bool>() == true && networkObject.IsServer) //If this can spawn an object in

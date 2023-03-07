@@ -8,20 +8,25 @@ public class ChaseClosePlayer : Node
      * Return RUNNING if it's possible to move towards target, FAILURE if not
      */
     protected float moveSpeed;
+    
     /// <summary>
-    /// Returns running when moving towards <paramref name="target"/> from <paramref name="origin"/> based on <paramref name="moveSpeed"/>
+    /// Constructor for ChaseClosePlayer
     /// </summary>
-    /// <param name="origin">The transform of the object you are moving from</param>
-    /// <param name="target">The transform of the object you are moving to</param>
-    /// <param name="moveSpeed">The speed <paramref name="origin"/> will move towards <paramref name="target"/></param>
+    /// <param name="moveSpeed">The speed the GameObject will move at</param>
     public ChaseClosePlayer(float moveSpeed)
     {
         this.moveSpeed = moveSpeed;
     }
 
+    /// <summary>
+    /// Evaluation for this Node
+    /// </summary>
+    /// <param name="blackboard">The BT_Blackboard the parent Node uses</param>
+    /// <returns>RUNNING whilst moving towards the Target Var and looking at Target</returns>
     public override NodeState Evaluate(BT_Blackboard blackboard)
     {
         blackboard.Origin.position = Vector3.MoveTowards(blackboard.Origin.position, blackboard.Target.position, moveSpeed * Time.deltaTime);
+        blackboard.Origin.LookAt(blackboard.Target, Vector3.up);
         return NodeState.RUNNING;
     }
 }

@@ -184,4 +184,9 @@ public class Move : PlayerBehavior
     {
         throw new System.NotImplementedException();
     }
+
+    public override void DestroyPlayer(RpcArgs args)
+    {
+        throw new System.NotImplementedException();
+    }
 }

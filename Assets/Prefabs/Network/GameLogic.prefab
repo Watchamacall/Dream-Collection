@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8684977099250668902}
   - component: {fileID: 8684977099250668901}
   - component: {fileID: 4791807938700307437}
+  - component: {fileID: 5560717048950123051}
   m_Layer: 0
   m_Name: GameLogic
   m_TagString: Untagged
@@ -51,7 +52,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8684977099250668900}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 10b3d4d78fe5692428ede27cc01feca9, type: 3}
   m_Name: 
@@ -59,3 +60,15 @@ MonoBehaviour:
   onControlModeChange:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &5560717048950123051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8684977099250668900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e545e43201faf24c962380f16759fbe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
