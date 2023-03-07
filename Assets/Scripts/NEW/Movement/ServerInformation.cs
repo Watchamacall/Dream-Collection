@@ -33,7 +33,8 @@ public class ServerInformation : PlayerBehavior
                 Destroy(destroyElements[i]);
             }
         }
-        networkObject.SendRpc(RPC_SEND_PLAYER_INFORMATION, Receivers.AllBuffered, new object[] { "New Name", new Color(Random.Range(0, 255), Random.Range(0, 255), Random.Range(0, 255)) }); //Sending RPC to other users about their name and colour (New Name is generic for now)
+        playerColour = Random.ColorHSV();
+        networkObject.SendRpc(RPC_SEND_PLAYER_INFORMATION, Receivers.AllBuffered, new object[] { "New Name", playerColour }); //Sending RPC to other users about their name and colour (New Name is generic for now)
     }
 
     private void OnDisable()
@@ -53,7 +54,7 @@ public class ServerInformation : PlayerBehavior
     public void LateUpdate()
     {
         if (networkObject != null)
-        {
+        { 
             if (networkObject.IsOwner) //Sending information about Owner to other Client's
             {
                 networkObject.position = transform.position;
@@ -77,6 +78,7 @@ public class ServerInformation : PlayerBehavior
         playerColour = args.GetNext<Color>();
 
         GetComponentInChildren<Renderer>().material.color = playerColour; //Get Child Component since the object this script is attached to doesn't have a Renderer
+
     }
 
     /// <summary>

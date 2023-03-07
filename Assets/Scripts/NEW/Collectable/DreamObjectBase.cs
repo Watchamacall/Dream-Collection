@@ -87,7 +87,7 @@ public class DreamObjectBase : DreamObjectBaseBehavior
         {
             Score.Instance.UpdateScore(score);
         }
-        networkObject.SendRpc(RPC_DESTROY_OBJECT, Receivers.AllBuffered, true); //D
+        networkObject.SendRpc(RPC_DESTROY_OBJECT, Receivers.AllBuffered, true);
     }
 
     /// <summary>

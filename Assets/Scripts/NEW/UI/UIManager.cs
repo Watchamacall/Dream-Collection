@@ -62,6 +62,10 @@ public class UIManager : MonoBehaviour
         }
     }
 
+
+    /// <summary>
+    /// Sets the canvas based on the <paramref name="ui_Unique"/> pasted in
+    /// </summary>
     public void SetCanvas(EUIUnique ui_Unique)
     {
         SetCanvas(canvases.Where(canvas => canvas.ui_Enum == ui_Unique).First().canvas);
